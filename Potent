@@ -1,0 +1,29 @@
+/*
+ * GccApplication2.cpp
+ *
+ * Created: 2/10/2020 4:18:30 PM
+ * Author : nmk51
+ */ 
+
+#include <avr/io.h>
+int sensorval = 0; //needs to be int since left justified
+
+int main(void)
+{
+   DDRC = 0b11011111;
+   PRR = 0x00; //clears power reduction
+   PORTC = 0xFF;
+   ADCSRA = 10000111; //enables ADC and sets freq to 128
+   ADMUX = 01100101; //Sets reff volt, sets to left justified, connects to ADC5
+   
+    while (1)
+    {
+		ADCSRA |= (1<<ADSC); //Turns bit 6 on to start conversion
+		while ((ADCSRA & (1<<ADIF))==0){ //Checks bit 4 to see if flag is up(finished reading)
+		       sensorval = ADCH + ADCL7 + ADCL6;//Reads the sensor val
+			   //Not sure if thats the right way to add the two bits from ADCL
+		PORTC = sensorval; //ECHO results back to portc
+		//Not sure what this does
+		}
+    }
+}
