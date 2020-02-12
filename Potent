@@ -8,11 +8,13 @@
 #include <avr/io.h>
 int sensorval = 0; //needs to be int since left justified
 
+//CHANGE ALL LIGHTS TO PORT D SO THAT WHEN CHANGING PORT FOR LIGHT CHANGING IT DOESNT MESS WITH POTENTIOMETER
+//IF OR WHILE LOOP????????
 int main(void)
 {
    DDRC = 0b11011111;
    PRR = 0x00; //clears power reduction
-   PORTC = 0xFF;
+   PORTC = 0xFF; //Clears all bits 
    ADCSRA = 10000111; //enables ADC and sets freq to 128
    ADMUX = 01100101; //Sets reff volt, sets to left justified, connects to ADC5
    
@@ -22,8 +24,34 @@ int main(void)
 		while ((ADCSRA & (1<<ADIF))==0){ //Checks bit 4 to see if flag is up(finished reading)
 		       sensorval = ADCH + ADCL7 + ADCL6;//Reads the sensor val
 			   //Not sure if thats the right way to add the two bits from ADCL
-		PORTC = sensorval; //ECHO results back to portc
+		//PORTC = sensorval; //ECHO results back to portc
 		//Not sure what this does
+		
+		//Change the values to binary numbers
+		if(sensorval >= 0 && < 255){
+		//Turn on lowest light
+		
+		}
+		if(sensorval >= 255 && < 511){
+		//Turn on low light
+	        
+		}
+		if(sensorval >= 511 && < 550){
+		//Clear all
+		//Changing lights to PORTD
+		//PORTD = 0b11111111;
+		}
+		if(sesnorval >=550 && < 767){
+		//Turn on medium light
+		
+		}
+		
+		if(sensorval >= 767 && <= 1023){
+		//Turn on high light
+		
+		}
+		
+		
 		}
     }
 }
