@@ -17,11 +17,6 @@
 char sensorval = 0; //dropping last two bits so can be char
 
 
-
-//CHANGE ALL LIGHTS TO PORT D SO THAT WHEN CHANGING PORT FOR LIGHT CHANGING IT DOESNT MESS WITH POTENTIOMETER
-
-//IF OR WHILE LOOP????????
-
 int main(void)
 
 {
@@ -48,23 +43,15 @@ int main(void)
 
 		while ((ADCSRA & (1<<ADIF))==0){ //Checks bit 4 to see if flag is up(finished reading)
 
-		       sensorval = ADCH;   // + ADC1D + ADC0D;//Reads the sensor val
+		       sensorval = ADCH; //Reads the sensor val
 
-			   //Not sure if thats the right way to add the two bits from ADCL
-
-		//PORTD = sensorval; //ECHO results back to portc
-
-		//Not sure what this does
-
-		
-
-		//Change the values to binary numbers
+			  
 
 		if(sensorval >= 0x0 && sensorval < 0x64){
 
 		//Turn on lowest light
        
-	    PORTD = 0b11111110;
+	        PORTD = 0b11111110;
 		
 
 		}
@@ -73,7 +60,7 @@ int main(void)
 
 		//Turn on low light
 
-	      PORTD = 0b11111101; 
+	        PORTD = 0b11111101; 
 
 		}
 
