@@ -1,57 +1,116 @@
 /*
+
  * GccApplication2.cpp
+
  *
+
  * Created: 2/10/2020 4:18:30 PM
+
  * Author : nmk51
+
  */ 
 
+
+
 #include <avr/io.h>
-int sensorval = 0; //needs to be int since left justified
+
+char sensorval = 0; //dropping last two bits so can be char
+
+
 
 //CHANGE ALL LIGHTS TO PORT D SO THAT WHEN CHANGING PORT FOR LIGHT CHANGING IT DOESNT MESS WITH POTENTIOMETER
+
 //IF OR WHILE LOOP????????
+
 int main(void)
+
 {
+
    DDRC = 0b11011111;
+   DDRD = 0xFF;
+   PORTD = 0xFF;
+
    PRR = 0x00; //clears power reduction
+
    PORTC = 0xFF; //Clears all bits 
-   ADCSRA = 10000111; //enables ADC and sets freq to 128
-   ADMUX = 01100101; //Sets reff volt, sets to left justified, connects to ADC5
+
+   ADCSRA = 0b10000111; //enables ADC and sets freq to 128
+
+   ADMUX = 0b01100101; //Sets reff volt, sets to left justified, connects to ADC5
+
    
+
     while (1)
+
     {
+
 		ADCSRA |= (1<<ADSC); //Turns bit 6 on to start conversion
+
 		while ((ADCSRA & (1<<ADIF))==0){ //Checks bit 4 to see if flag is up(finished reading)
-		       sensorval = ADCH + ADCL7 + ADCL6;//Reads the sensor val
+
+		       sensorval = ADCH;   // + ADC1D + ADC0D;//Reads the sensor val
+
 			   //Not sure if thats the right way to add the two bits from ADCL
-		//PORTC = sensorval; //ECHO results back to portc
+
+		//PORTD = sensorval; //ECHO results back to portc
+
 		//Not sure what this does
+
 		
+
 		//Change the values to binary numbers
-		if(sensorval >= 0 && < 255){
+
+		if(sensorval >= 0x0 && sensorval < 0x64){
+
 		//Turn on lowest light
+       
+	    PORTD = 0b11111110;
 		
+
 		}
-		if(sensorval >= 255 && < 511){
+
+		if(sensorval >= 0x64 && sensorval < 0x96){
+
 		//Turn on low light
-	        
+
+	      PORTD = 0b11111101; 
+
 		}
-		if(sensorval >= 511 && < 550){
-		//Clear all
-		//Changing lights to PORTD
-		//PORTD = 0b11111111;
+
+		if(sensorval >= 0x96 && sensorval < 0xC8){
+
+		//Neutral Light
+
+		PORTD = 0b11111011;
+
 		}
-		if(sesnorval >=550 && < 767){
+
+		if(sensorval >= 0xC8 && sensorval < 0xFA){
+
 		//Turn on medium light
+        
+		PORTD = 0b11110111;
 		
+
 		}
+
 		
-		if(sensorval >= 767 && <= 1023){
+
+		if(sensorval >= 0xFA){
+
 		//Turn on high light
-		
+
+		PORTD = 0b11101111;
+
 		}
+
 		
+
 		
+
 		}
+
     }
+
 }
+
