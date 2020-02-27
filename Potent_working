@@ -21,18 +21,20 @@ int main(void)
 
 {
 
-   DDRC = 0b11011111;
-   DDRD = 0xFF;
+   DDRC = 0x00;
+   
+   DDRD = 0xff;
    PORTD = 0xFF;
 
    PRR = 0x00; //clears power reduction
 
-   PORTC = 0xFF; //Clears all bits 
+   //PORTC = 0xFF; //Clears all bits 
 
    ADCSRA = 0b10000111; //enables ADC and sets freq to 128
 
    ADMUX = 0b01100101; //Sets reff volt, sets to left justified, connects to ADC5(PC5)
-
+   // ADCSRA = 1 << ADEN | 1 << ADPS2 | 1 << ADPS1 | 1 << ADPS0;
+	//ADMUX = 0 << REFS1 | 1<<REFS0 | 1 << ADLAR;
    
 
     while (1)
@@ -47,7 +49,7 @@ int main(void)
 
 			  
 
-		if(sensorval >= 0x0 && sensorval < 0x64){
+		if(sensorval >= 0 && sensorval < 51){
 
 		//Turn on lowest light
        
@@ -56,7 +58,7 @@ int main(void)
 
 		}
 
-		if(sensorval >= 0x64 && sensorval < 0x96){
+		if(sensorval >= 51 && sensorval < 102){
 
 		//Turn on low light
 
@@ -64,7 +66,7 @@ int main(void)
 
 		}
 
-		if(sensorval >= 0x96 && sensorval < 0xC8){
+		if(sensorval >= 102 && sensorval < 153){
 
 		//Neutral Light
 
@@ -72,7 +74,7 @@ int main(void)
 
 		}
 
-		if(sensorval >= 0xC8 && sensorval < 0xFA){
+		if(sensorval >= 153 && sensorval < 204){
 
 		//Turn on medium light
         
@@ -83,7 +85,7 @@ int main(void)
 
 		
 
-		if(sensorval >= 0xFA){
+		if(sensorval >= 204){
 
 		//Turn on high light
 
@@ -100,4 +102,3 @@ int main(void)
     }
 
 }
-
